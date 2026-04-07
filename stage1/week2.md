@@ -1,86 +1,529 @@
-# 第一阶段 第2周
+# 第一阶段 第2周：RAG进阶 + LangChain + 工具调用
 
-> 本周目标：深入RAG，掌握LangChain基础，理解工具调用标准
+> 本周目标：深入理解RAG优化，掌握LangChain框架，学会工具调用
+> 
+> 上周你已经写出了一个简单RAG，本周让它更好用，学会用框架提升开发效率
 
 | 天 | 上午（2h） | 下午（2h） | 完成打卡 |
 |----|------------|------------|----------|
-| 第1天 | Embedding模型选型，对比开源vs闭源 | 测试不同Embedding在你的RAG上效果 | ☐ |
-| 第2天 | RAG优化技巧：分块策略、混合检索、重排序 | 在你的项目中实践一个优化技巧 | ☐ |
-| 第3天 | LangChain v1.x核心概念：Chain、PromptTemplate、Retriever | 安装LangChain，跑通官方示例 | ☐ |
-| 第4天 | LangChain实现完整RAG流程 | 把你上周的RAG项目用LangChain重写一遍 | ☐ |
-| 第5天 | Function Calling vs MCP协议，理解工具调用标准 | 实现一个简单的工具调用示例 | ☐ |
-| 第6天 | 项目复盘，整理笔记，提交GitHub | 回顾两周基础学习，总结收获 | ☐ |
+| 第1天 | Embedding模型选型深度对比 | 动手测试不同Embedding效果 | ☐ |
+| 第2天 | RAG高级优化技巧原理 | 在项目中实践至少一个优化 | ☐ |
+| 第3天 | LangChain核心概念与组件 | 安装跑通官方示例 | ☐ |
+| 第4天 | LangChain实现完整RAG | 用LangChain重写上周项目 | ☐ |
+| 第5天 | 工具调用：Function Calling / MCP | 实现第一个工具调用示例 | ☐ |
+| 第6天 | 两周学习复盘整理 | 修复bug，整理项目到GitHub | ☐ |
 
 ---
 
-## 每日详细内容（带具体资源链接）
+## 🔢 第1天：Embedding模型选型深度对比
 
-### 第1天：Embedding模型选型
+### 上午（2h）：理论对比
 
-**上午（2h）**
-1. (1h) 理解Embedding作用：把文本转成向量，通过向量相似性找到相关文本，是RAG的核心基础
-2. (1h) 对比不同选型：
-   - 闭源Embedding：OpenAI `text-embedding-3` 效果好，按token收费，方便
-   - 开源Embedding：**BGE系列（中文推荐）**、JinaEmbedding，可本地部署免费，对中文优化更好
+### 为什么Embedding这么重要？
 
-**下午（2h）**
-1. (2h) **动手测试**：用同一个问题，同一个文档，测试至少两种不同Embedding的检索效果，对比哪个更符合你的需求，记录下来
-   - BGE本地使用：https://github.com/FlagOpen/FlagEmbedding
+> RAG的准确率，**70%取决于Embedding质量**。检索错了，LLM肯定回答错。
 
----
+### 主流Embedding模型对比
 
-### 第2天：RAG优化技巧
+| 模型 | 类型 | 价格 | 部署 | 中文效果 | 推荐场景 |
+|------|------|------|------|----------|----------|
+| OpenAI text-embedding-3-small | 闭源 | $0.02/1M tokens | 云端 | 不错 | 快速开发，不介意花钱 |
+| OpenAI text-embedding-3-large | 闭源 | $0.13/1M tokens | 云端 | 好 | 追求效果，可接受成本 |
+| BGE-base-v1.5 | 开源免费 | 免费 | 可本地 | **优秀**（专门优化中文） | 本地部署，对中文要求高 |
+| BGE-large-v1.5 | 开源免费 | 免费 | 可本地 | **更好** | 资源足够，追求效果 |
+| JinaEmbedding v2 | 开源免费 | 免费 | 可本地 | 好 | 长文本处理 |
+| 智联文思Embedding | 国内闭源 | 有免费额度 | 云端 | 优秀 | 国内开发 |
 
-**上午（2h）**
-1. (0.5h) 分块策略：固定大小分块 vs 语义分块，各有什么优劣，什么时候用哪种
-2. (0.5h) 学习进阶优化：混合检索（向量检索 + 关键词检索），为什么效果更好；重排序：为什么重排序能提高准确率
-3. (1h) 学习使用CrossEncoder重排序，看官方示例
+### 新手推荐选择：
 
-**下午（2h）**
-1. (2h) **动手实践**：在你上周做的RAG项目上，实践至少一个优化技巧（比如换BGE Embedding，加重排序），对比优化前后效果，记录下来，写在你的项目README里
+- **快速入门**：先用OpenAI Embedding（或通义千问Embedding），不用本地部署，方便
+- **中文优先+免费**：用BGE-base，效果比OpenAI 3-small在中文上更好，完全免费
 
----
-
-### 第3天：LangChain v1.x核心概念
-
-**上午（2h）**
-1. (1h) 理解LangChain是什么：它是大模型应用开发框架，帮你封装了很多通用组件，不用自己重复造轮子
-2. (1h) 学习三个核心组件：
-   - `PromptTemplate`: 提示词模板复用，避免硬编码
-   - `Chain`: 把多个步骤串起来，方便流程管理
-   - `Retriever`: 统一检索接口，支持不同向量数据库
-
-**下午（2h）**
-1. (2h) **动手**：安装LangChain v1.x，跑通官方的RAG示例，理解每个部分做什么
-   - 官方入门：https://python.langchain.com/docs/get_started/introduction
+### 什么是"对中文优化更好"？
+- 中文分词和英文不同，很多开源Embedding是英文训练的，中文表现差
+- BGE是智源研究院做的，专门训练了中文数据，对中文理解更好
 
 ---
 
-### 第4天：LangChain实现完整RAG
+### 下午（2h）：动手测试
 
-**上午（2h）**
-1. (2h) 阅读LangChain官方RAG文档，理解官方推荐的最佳实践：https://python.langchain.com/docs/modules/data_connection/
+**练习目标：** 用同一个问题和文档，测试两种不同Embedding，对比检索结果
 
-**下午（2h）**
-1. (2h) **动手重写**：把你上周做的私人知识库机器人，用LangChain重写一遍，对比手写和用框架区别，理解框架帮你省了多少事
+**BGE本地使用步骤：**
+
+1. 安装依赖：
+```bash
+pip install FlagEmbedding sentence-transformers
+```
+
+2. 最小使用示例：
+```python
+from FlagEmbedding import FlagModel
+
+model = FlagModel('BAAI/bge-base-zh-v1.5')
+sentences = [
+    "AI Agent是能自主完成复杂任务的智能体", 
+    "RAG解决LLM幻觉问题"
+]
+embeddings = model.encode(sentences)
+print(embeddings.shape)  # (2, 768)
+```
+
+3. 对比测试：
+   - 用上周同一个PDF
+   - 分别用两种Embedding生成向量存储
+   - 用5个不同问题测试，看哪个返回的结果更相关
+   - 把对比结果记在项目README里
+
+**项目地址：** https://github.com/FlagOpen/FlagEmbedding
 
 ---
 
-### 第5天：工具调用：Function Calling & MCP
+## ⚡ 第2天：RAG优化技巧
 
-**上午（2h）**
-1. (1h) 理解核心：什么是工具调用 —— 让LLM能调用外部API/函数，突破自身知识和能力限制，真正能"动手干活"
-2. (1h) 学习Function Calling：OpenAI/Anthropic都支持的标准，理解请求响应格式
+### 上午（2h）：学习优化方法
 
-**下午（2h）**
-1. (1h) 学习MCP协议（模型上下文协议）：Anthropic最新推出的统一工具调用标准，理解它解决了"每个模型格式不统一"的问题，一次开发多模型复用
-2. (1h) **动手写示例**：用LangChain实现一个简单工具调用，让LLM调用查天气的工具，拿到结果再回答用户，完整跑通
+### 1. 分块策略优化
+
+**默认方案：固定大小滑动窗口**
+```
+chunk_size = 500  # 字符数
+overlap = 50      # 重叠，避免把连贯内容切碎
+```
+优点：简单，够用；缺点：可能把连贯语义切碎。
+
+**进阶方案：语义分块**
+- 用Embedding相似度判断，语义连贯的放一块，自动分割
+- 工具：LangChain `SemanticChunker`
+- 适用：长文档，段落结构清晰
+
+**最佳实践：**
+- 短文档：512-1000 token
+- 长文档：1000-2000 token
+- 一定要留50-100 token重叠
+
+### 2. 混合检索优化
+
+**问题：** 纯向量检索有时候漏了关键词匹配
+
+**解决方案：** 向量检索（语义）+ 关键词检索（BM25）结果融合
+
+```
+用户问题 → 
+  → 向量检索找Top10
+  → BM25关键词检索找Top10
+  → 融合结果去重 → 去Top5给LLM
+```
+
+效果：比纯向量检索准确率提高5-10%，代码增加不多，强烈建议加上。
+
+### 3. 重排序（Rerank）优化
+
+**为什么需要重排序？**
+- 第一步多路召回找Top20
+- 用一个更精准（但更慢）的模型对Top20排序，选出最相关的Top5
+- 效果：准确率再提升10-15%
+
+**常用重排序模型：**
+- CrossEncoder（BERT-based）：效果好，速度相对慢
+- BGE-Reranker：中文优化，开源免费，推荐使用
+
+**大致流程：**
+```python
+from FlagEmbedding import FlagReranker
+
+reranker = FlagReranker('BAAI/bge-reranker-base')
+
+# pairs: (query, passage)
+scores = reranker.compute_score([(question, doc1), (question, doc2)])
+# 根据score排序，取topN
+```
 
 ---
 
-### 第6天：两周复盘
+### 下午（2h）：动手实践
 
-**全天（4h）**
-1. (2h) 整理两周学习笔记，修复你项目里遇到的bug，完善项目README
-2. (1h) 总结：这两周你遇到了哪些坑，你是怎么解决的，记在你的笔记里，后面复习方便
-3. (1h) 提交所有代码到GitHub，准备进入第二阶段Agent核心学习
+**任务：** 在你上周的RAG项目中，实践至少一个优化技巧
+
+推荐选择顺序：
+1.  **容易见效**：换成BGE中文Embedding → 中文效果立竿见影
+2.  **再加一点**：加上重排序 → 准确率进一步提升
+3.  **进阶挑战**：实现混合检索
+
+**验收标准：**
+- [ ] 优化代码已集成到项目
+- [ ] 在README中记录了优化前后对比
+- [ ] 能跑通，能看到效果
+
+---
+
+## 🔗 第3天：LangChain v1.x核心概念
+
+### 上午（2h）：框架理解
+
+### 为什么要用LangChain？
+
+你上周手写了RAG，为什么还要用框架？
+
+| 开发阶段 | 手写优势 | 框架优势 |
+|----------|----------|----------|
+| 学习理解 | 清楚每个步骤，容易理解 | 封装细节，开发快 |
+| 功能复杂 | 代码越来越乱，难维护 | 组件化，易扩展 |
+| 生态集成 | 每个数据库都要自己适配 | 已经适配了几十种向量库/LLM |
+
+**LangChain就是：** 大模型应用开发的"万能积木"，常用组件都给你做好了，拼起来就行。
+
+### 核心概念理解
+
+#### 1. **PromptTemplate** - 提示词模板
+```python
+# 不用LangChain你可能会这么写
+prompt = f"""你是一个助手，请基于上下文回答：{context}
+问题：{question}"""
+
+# 用LangChain更优雅
+from langchain.prompts import PromptTemplate
+
+prompt = PromptTemplate.from_template("""
+你是一个助手，请基于上下文回答：
+{context}
+问题：{question}
+""")
+
+# 格式化
+formatted = prompt.format(context=..., question=...)
+```
+
+好处：
+- 模板和代码分离
+- 参数化，容易复用
+- 支持Jinja2等高级模板语法
+
+#### 2. **Chain** - 流程串联
+Chain就是把"输入 → A处理 → B处理 → C处理 → 输出"串起来：
+
+```python
+# 伪代码理解Chain
+chain = prompt | llm | output_parser
+
+# 调用一次就走完所有流程
+result = chain.invoke({"question": "XXX"})
+```
+
+LangChain的写法：
+```python
+from langchain_core.output_parsers import StrOutputParser
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI()
+output_parser = StrOutputParser()
+
+chain = prompt | llm | output_parser
+result = chain.invoke({"context": context, "question": question})
+```
+
+这就是LangChain的表达式语法（LCEL），简洁清晰。
+
+#### 3. **Retriever** - 检索接口统一
+Retriever是一个抽象接口：
+```python
+# 不管你用Chroma还是PGVector还是Elasticsearch
+# 调用方式都是一样的：
+results = retriever.get_relevant_documents(query)
+```
+
+好处：你换向量库不用改调用代码，切换成本低。
+
+---
+
+### 下午（2h）：动手安装跑通
+
+**步骤：**
+1. 安装LangChain：
+```bash
+pip install langchain langchain-openai langchain-chroma
+```
+
+2. 跑通官方最小RAG示例：https://python.langchain.com/docs/tutorials/rag
+
+3. 理解每个部分：
+   - `TextLoader` 加载文档
+   - `RecursiveCharacterTextSplitter` 分块
+   - `Chroma` 向量库存储
+   - `retriever` 检索
+   - `prompt` 模板
+   - `llm` 调用
+   - `chain` 串联
+
+**遇到问题：**
+- 依赖版本冲突 → 建议用虚拟环境（venv/conda）
+- 网络问题 → OpenAI需要科学上网，换成通义千问即可
+
+---
+
+## 🚀 第4天：用LangChain重构RAG项目
+
+### 上午（2h）：学习官方最佳实践
+
+阅读官方文档：https://python.langchain.com/docs/modules/data_connection/
+
+理解：
+- 不同文档类型（PDF、Word、Markdown）怎么加载
+- 不同分块策略怎么选
+- 向量存储有哪些选项
+
+---
+
+### 下午（2h）：动手重构
+
+**任务：** 把你上周手写的RAG项目，用LangChain重构一遍
+
+**预期项目结构：**
+```
+simple-rag-langchain/
+├── .env
+├── .gitignore
+├── requirements.txt
+├── README.md
+├── data/
+│   └── your-document.pdf
+└── main.py
+```
+
+**主要步骤：**
+1. 用 `PyPDFLoader` 加载PDF
+2. 用 `RecursiveCharacterTextSplitter` 分块
+3. 用 `Chroma` from_documents 建立索引
+4. 定义RAG提示词模板
+5. 用LCEL组装成RAG chain
+6. 测试问答
+
+**完整最小RAG代码（LangChain v0.1+）：**
+
+```python
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_chroma import Chroma
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# 1. 加载PDF
+loader = PyPDFLoader("data/your-document.pdf")
+documents = loader.load()
+
+# 2. 分块
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,
+    chunk_overlap=200
+)
+splits = text_splitter.split_documents(documents)
+
+# 3. 建立向量库
+vectorstore = Chroma.from_documents(
+    documents=splits,
+    embedding=OpenAIEmbeddings()
+)
+retriever = vectorstore.as_retriever()
+
+# 4. Prompt模板
+prompt = ChatPromptTemplate.from_template("""
+你是一个助手，请基于以下上下文回答用户问题。
+如果找不到答案，就说"我在文档中没有找到相关信息"，不要编造。
+
+上下文：
+{context}
+
+问题：{question}
+""")
+
+# 5. 组装RAG链
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
+
+rag_chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+
+# 6. 问答测试
+question = "XXX"
+answer = rag_chain.invoke(question)
+print(answer)
+```
+
+对比一下：比你手写是不是简洁很多？LangChain帮你做了哪些事？
+
+---
+
+## 🛠️ 第5天：工具调用 - Function Calling & MCP
+
+### 上午（2h）：原理理解
+
+### 什么是工具调用？
+
+- 没有工具调用：LLM只能聊天，不能"做事"
+- 有了工具调用：LLM能识别"什么时候需要调用外部工具"，拿到结果再回答你
+
+**典型例子：查天气**
+```
+用户：今天北京天气怎么样？
+
+LLM：我需要查天气 → 调用get_weather(city="北京") → 
+工具返回：25度，晴天 → 
+LLM：今天北京晴天，气温25度。
+```
+
+这就是完整的工具调用流程。
+
+### Function Calling（OpenAI标准）
+
+OpenAI的Function Calling格式：
+
+1. 你给LLM说明有哪些工具：
+```json
+{
+  "name": "get_weather",
+  "description": "查询城市天气",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "city": {
+        "type": "string",
+        "description": "城市名称"
+      }
+    },
+    "required": ["city"]
+  }
+}
+```
+
+2. LLM返回它要调用哪个函数，参数是什么：
+```json
+{
+  "name": "get_weather",
+  "arguments": {
+    "city": "北京"
+  }
+}
+```
+
+3. 你调用工具得到结果，发回给LLM，LLM生成最终回答。
+
+**要点：**
+- 工具描述一定要写清楚，LLM靠description理解什么时候用这个工具
+- 参数说明要准确，类型、说明都不能少
+
+### MCP（Model Context Protocol）
+
+Anthropic推出的**统一工具调用协议**：
+
+解决什么问题：
+- 每个LLM厂商Function Calling格式不一样，换模型要改大量代码
+- MCP定义统一标准，一次开发，适配所有支持MCP的模型
+
+**发展趋势：** MCP会逐步成为行业标准，值得关注。
+
+---
+
+### 下午（2h）：动手实现简单工具调用
+
+用LangChain实现一个天气查询工具调用示例：
+
+```python
+from langchain_openai import ChatOpenAI
+from langchain_core.tools import tool
+from langgraph.prebuilt import ToolNode
+from langgraph.graph import StateGraph, MessagesState
+import json
+
+# 1. 定义工具
+@tool
+def get_weather(city: str) -> str:
+    """查询指定城市的天气.
+    
+    Args:
+        city: 城市名称
+    """
+    # 这里模拟，实际应该调用天气API
+    weather_data = {
+        "北京": "晴天，25度",
+        "上海": "多云，28度",
+        "广州": "下雨，30度"
+    }
+    return weather_data.get(city, f"未知城市{city}")
+
+# 2. 绑定工具到LLM
+tools = [get_weather]
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+llm_with_tools = llm.bind_tools(tools)
+
+# 3. 测试调用
+from langchain_core.messages import HumanMessage
+message = HumanMessage(content="北京今天天气怎么样？")
+response = llm_with_tools.invoke([message])
+
+# LLM会返回工具调用请求
+print(response.tool_calls)
+
+# 你执行工具调用，把结果返回给LLM得到最终回答
+# LangGraph可以帮你自动完成这个循环
+```
+
+**完成：** 跑通这个示例，理解工具调用的完整循环。
+
+---
+
+## 📋 第6天：两周学习复盘
+
+### 全天（4h）：整理总结
+
+**要做的事：**
+
+1. **代码整理**（2h）
+   - 把两周两个RAG项目（手写版 + LangChain版）整理好
+   - 每个项目都要有清晰的README，说明怎么安装怎么运行
+   - 修复遇到的bug，把踩过的坑记下来
+
+2. **笔记整理**（1h）
+   - 整理学习笔记：
+     - 学到了哪些核心概念？
+     - 遇到了什么问题？怎么解决的？
+     - 有什么经验教训？
+   - 记录在你的笔记里，后面复习方便
+
+3. **提交GitHub**（1h）
+   - 创建两个仓库，推送到GitHub
+   - 检查`.gitignore`有没有忽略`.env`（不要把API Key传上去！）
+   - 确认能正常clone下来运行
+
+---
+
+## ✅ 本周学习检查清单
+
+学完本周，你应该掌握：
+
+- [ ] 能对比不同Embedding模型的优缺点，选择适合的
+- [ ] 说出至少3种RAG优化方法，理解原理
+- [ ] 会用LangChain核心组件：PromptTemplate, Chain, Retriever
+- [ ] 能用LangChain快速搭建一个RAG应用
+- [ ] 理解工具调用原理，实现简单的Function Calling
+- [ ] 两个项目都推送到GitHub，有README说明
+
+---
+
+## 📚 扩展阅读（选看）
+
+- [LangChain官方文档](https://python.langchain.com/docs/)
+- [BGE官方GitHub](https://github.com/FlagOpen/FlagEmbedding)
+- [MCP模型上下文协议](https://modelcontextprotocol.io/)
+- [LangGraph官方文档](https://langchain-ai.github.io/langgraph/) - LangChain的Agent编排框架
