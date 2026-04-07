@@ -627,6 +627,98 @@ git push origin main
 
 ---
 
+## 📝 本周测试题（带答案）
+
+<details>
+<summary>点击展开 ▶️ 1. 多智能体协作相比单Agent，最大优势是什么？（多选）</summary>
+
+> A. 专业分工，每个Agent专精一件事，质量更高  
+> B. 互相评审，降低错误率  
+> C. 代码更少更简单  
+> D. 灵活扩展，加功能加Agent就行  
+
+**答案：A、B、D**  
+解释：多智能体代码更多结构更复杂，但分工和评审带来质量提升，扩展也更灵活。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 2. CrewAI核心三个概念是？</summary>
+
+> A. 模型、数据、训练  
+> B. Agent、Task、Crew  
+> C. 节点、边、状态  
+> D. 用户、Agent、工具  
+
+**答案：B**  
+解释：CrewAI中，你定义Agent（角色）、Task（任务），然后放到Crew（团队）里运行。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 3. CrewAI中backstory是做什么的？</summary>
+
+> A. 项目背景故事  
+> B. 给Agent更多上下文，让它更清楚角色定位，效果更好  
+> C. 保存历史对话  
+> D. 开发日志  
+
+**答案：B**  
+解释：backstory描述Agent的背景经验，让LLM更清楚角色，输出更符合预期。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 4. YFinance获取中国A股"贵州茅台"，代码格式正确的是？</summary>
+
+> A. 600519  
+> B. 600519.SH  
+> C. 600519.SZ  
+> D. GZMT  
+
+**答案：B**  
+解释：上海交易所股票后缀`.SH`，深圳交易所后缀`.SZ`，所以贵州茅台是`600519.SH`。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 5. 本项目中用户投资偏好记忆是怎么实现的？</summary>
+
+> A. 存在LLM权重里  
+> B. 存在Chroma向量数据库，检索相关偏好注入Prompt  
+> C. 存在文本文件里每次都全读进去  
+> D. 存在cookie里  
+
+**答案：B**  
+解释：用向量数据库存储，检索相关偏好，不占上下文，容量大。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 6. 代码题：补全CrewAI定义Agent代码</summary>
+
+```python
+from crewai import Agent
+
+data_collector = ____(
+    ____='金融数据收集专家',
+    ____='准确获取股票数据',
+    ____='你有10年金融数据处理经验',
+    verbose=True
+)
+```
+
+**答案：**
+```python
+from crewai import Agent
+
+data_collector = Agent(
+    role='金融数据收集专家',
+    goal='准确获取股票数据',
+    backstory='你有10年金融数据处理经验',
+    verbose=True
+)
+```
+顺序就是 role → goal → backstory。
+</details>
+
+---
+
 ## 📚 扩展阅读（选看）
 
 - [CrewAI官方文档](https://docs.crewai.com/)

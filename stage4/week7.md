@@ -372,6 +372,100 @@ docker run -p 8501:8501 --env-file .env finance-ai-assistant
 
 ---
 
+## 📝 本周测试题（带答案）
+
+<details>
+<summary>点击展开 ▶️ 1. 什么是Agentic RAG？</summary>
+
+> A. 就是普通RAG换个名字  
+> B. 让Agent动态决定是否需要检索、检索几次，复杂问题效果更好  
+> C. 一次检索搞定所有  
+> D. 不需要LLM，只用Agent  
+> 
+**答案：B**  
+解释：传统RAG不管什么问题都固定检索一次；Agentic RAG让Agent自己决策，不确定就再检索一次，复杂问题准确率更高。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 2. 什么是Prompt注入攻击？</summary>
+
+> A. 给Prompt更快  
+> B. 用户输入藏恶意指令，让Agent忽略原来指令执行恶意操作  
+> C. 注入更快获取更高权限  
+> D. 注入代码让模型崩溃  
+> 
+**答案：B**  
+解释：Prompt注入就是用户在输入里藏指令，让Agent不听原来的系统提示，执行攻击者想要的操作。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 3. 权限控制的最小权限原则是什么意思？</summary>
+
+> A. 权限越小越好  
+> B. Agent只给完成任务必须的最小权限，多一点都不给  
+> C. 最小化权限代码行数  
+> D. 给所有最小频率访问  
+> 
+**答案：B**  
+解释：最小权限原则就是只给需要的权限，哪怕Agent就算被攻破也干不了大事，降低危害。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 4. Docker主要解决了什么问题？</summary>
+
+> A. 更快运行  
+> B. "我本地能跑，服务器不能跑环境不一致问题  
+> C. 更小镜像体积更小  
+> D. 更好编程语言  
+> 
+**答案：B**  
+解释：Docker打包环境和依赖，一次打包到处运行，解决了"我本地能跑，服务器不能跑"的经典问题。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 5. 哪个是多模态Agent？</summary>
+
+> A. 多个Agent  
+> B. 能处理文本、图像等多种模态输入输出  
+> C. 多个模态框  
+> D. 多语言Agent  
+> 
+**答案：B**  
+解释：多模态就是多种数据模态，文本、图像、音频这些都能处理。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 6. 补全Dockerfile</summary>
+
+```dockerfile
+# 基础镜像
+____ python:3.10-slim
+
+# 工作目录
+____ /app
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+____ 8501
+
+CMD ["streamlit", "run", "app.py", ...
+```
+
+①②③分别填什么？
+
+**答案：**
+① `FROM`
+② `WORKDIR`
+③ `EXPOSE`
+
+完整正确Dockerfile就是教程里给的那个示例。
+</details>
+
+---
+
 ## 📚 推荐阅读
 
 - [Agentic RAG: 检索增强生成的下一站](https://blog.langchain.com/agentic-rag/)

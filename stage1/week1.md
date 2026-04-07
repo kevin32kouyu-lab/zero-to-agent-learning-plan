@@ -564,6 +564,144 @@ simple-rag/
 
 ---
 
+---
+
+## 📝 本周测试题（带答案）
+
+> 点击「▶️」展开看答案
+
+---
+
+<details>
+<summary>▶️ 1. 以下哪个不是Agent四大核心组件？</summary>
+> A. 大脑（LLM）  
+> B. 规划模块  
+> C. 数据库  
+> D. 记忆模块  
+
+**答案：C**  
+解释：Agent四大组件是：大脑(LLM)、规划、工具调用、记忆。数据库是存储工具，不是核心组件。
+</details>
+
+---
+
+<details>
+<summary>▶️ 2. 思维链（CoT）的核心作用是什么？</summary>
+> A. 让LLM输出更快  
+> B. 让LLM一步步思考，提高推理正确率  
+> C. 让LLM能调用工具  
+> D. 让LLM记住对话历史  
+
+**答案：B**  
+解释：思维链就是让LLM把思考过程说出来，正确率能提升30%以上。
+</details>
+
+---
+
+<details>
+<summary>▶️ 3. RAG主要解决LLM的什么问题？（多选）</summary>
+> A. 幻觉问题  
+> B. 速度慢问题  
+> C. 知识截止问题  
+> D. 私有数据问题  
+
+**答案：A、C、D**  
+解释：RAG不能解决速度慢问题，反而因为多了检索步骤会稍慢一点，但能有效解决幻觉、知识截止、私有数据这三个问题。
+</details>
+
+---
+
+<details>
+<summary>▶️ 4. 以下关于RAG分块的说法，哪个正确？</summary>
+> A. 分块越大越好，信息完整  
+> B. 分块越小越好，检索精确  
+> C. 一般分500-1000token比较合适，要留重叠  
+> D. 不用分块，直接整个文档存进去  
+
+**答案：C**  
+解释：太大占上下文，检索不精确；太小切碎语义；一般500-1000token最合适，留一点重叠避免切碎连贯内容。
+</details>
+
+---
+
+<details>
+<summary>▶️ 5. 代码题：补全下面的OpenAI API调用代码</summary>
+
+```python
+import openai
+import os
+
+openai.api_key = ____①____
+
+response = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": ____②____, "content": "你是一个助手"},
+        {"role": ____③____, "content": "你好"},
+    ]
+)
+
+print(response.____④____)
+```
+
+**答案：**
+① `os.getenv("OPENAI_API_KEY")`  
+② `"system"`  
+③ `"user"`  
+④ `choices[0].message.content`
+
+**完整可运行代码：**
+```python
+import openai
+import os
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+response = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "system", "content": "你是一个助手"},
+        {"role": "user", "content": "你好"},
+    ]
+)
+
+print(response.choices[0].message.content)
+```
+</details>
+
+---
+
+<details>
+<summary>▶️ 6. 代码题：Chroma检索，补全代码</summary>
+
+```python
+import chromadb
+
+client = chromadb.Client()
+collection = client.create_collection("my_docs")
+
+collection.____①____(
+    documents=["Python是一种编程语言", "AI Agent能自主完成任务"],
+    ids=["doc1", "doc2"]
+)
+
+results = collection.____②____(
+    query_texts=["什么是AI Agent"],
+    n_results=2
+)
+
+print(results)
+```
+
+**答案：**
+① `add`  
+② `query`
+
+**运行结果：** 会返回第二个文档"AI Agent能自主完成任务"作为最相关结果。
+</details>
+
+---
+
 ## 📚 扩展阅读（选看）
 
 - [LangChain官方文档 - RAG](https://python.langchain.com/docs/modules/data_connection/)

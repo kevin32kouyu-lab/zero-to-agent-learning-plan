@@ -549,6 +549,88 @@ git push origin main
 
 ---
 
+## 📝 本周测试题（带答案）
+
+<details>
+<summary>点击展开 ▶️ 1. 本项目为什么选LangGraph不选CrewAI？</summary>
+
+> A. 因为LangGraph名气更大  
+> B. 因为需要循环评审（Review不通过回去改），LangGraph对条件循环支持更灵活  
+> C. 因为LangGraph不用写代码  
+> D. 因为CrewAI不做多Agent  
+
+**答案：B**  
+解释：代码生成需要"写完 → Review → 不通过 → 修改"循环，LangGraph原生支持条件分支和循环，比CrewAI更灵活适合这个场景。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 2. Code Review之后，如果不通过，流程怎么走？</summary>
+
+> A. 直接结束，输出不完美的代码  
+> B. 回到开发者Agent，带着Review意见修改代码  
+> C. 重新从需求拆解开始  
+> D. 报错给用户  
+
+**答案：B**  
+解释：Review不通过，开发者根据意见修正，再Review，循环直到通过或达到最大重试次数。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 3. GitHub Token需要什么权限？</summary>
+
+> A. repo  
+> B. read:user  
+> C. admin  
+> D. gist  
+
+**答案：A**  
+解释：我们需要创建仓库和提交代码，所以需要`repo`权限。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 4. LLM输出JSON格式错了，怎么处理？</summary>
+
+> A. 直接崩溃报错  
+> B. 重试几次，还是错就返回错误给用户  
+> C. 忽略格式错误继续  
+> D. 让用户重新输入  
+
+**答案：B**  
+解释：LLM偶尔格式错很正常，增加重试机制大部分能自我修复，实在不行再报错。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 5. 防止死循环，需要做什么？</summary>
+
+> A. 不用处理，LLM自己会停  
+> B. 设置最大循环/重试次数  
+> C. 每次让用户确认  
+> D. 去掉循环改成一次完成  
+
+**答案：B**  
+解释：LLM可能一直改不通过，设置最大次数（比如最多3轮修改），超过就强制结束，避免死循环浪费token。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 6. 代码题：补全LangGraph条件判断</summary>
+
+```python
+def should_continue(state):
+    review_result = state["review_result"]
+    if ____①____:
+        return "fix"
+    else:
+        return "passed"
+```
+
+**答案：**
+① `not review_result["passed"]`
+
+当`passed`是`false`的时候，说明有问题需要修改，走fix分支回到开发者。
+</details>
+
+---
+
 ## 📚 扩展阅读（选看）
 
 - [LangGraph官方文档](https://langchain-ai.github.io/langgraph/)

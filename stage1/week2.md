@@ -151,9 +151,9 @@ scores = reranker.compute_score([(question, doc1), (question, doc2)])
 3.  **进阶挑战**：实现混合检索
 
 **验收标准：**
-- [ ] 优化代码已集成到项目
-- [ ] 在README中记录了优化前后对比
-- [ ] 能跑通，能看到效果
+- [x] 优化代码已集成到项目
+- [x] 在README中记录了优化前后对比
+- [x] 能跑通，能看到效果
 
 ---
 
@@ -343,7 +343,7 @@ prompt = ChatPromptTemplate.from_template("""
 """)
 
 # 5. 组装RAG链
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+llm = ChatOpen(model="gpt-3.5-turbo", temperature=0)
 
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
@@ -512,12 +512,130 @@ print(response.tool_calls)
 
 学完本周，你应该掌握：
 
-- [ ] 能对比不同Embedding模型的优缺点，选择适合的
-- [ ] 说出至少3种RAG优化方法，理解原理
-- [ ] 会用LangChain核心组件：PromptTemplate, Chain, Retriever
-- [ ] 能用LangChain快速搭建一个RAG应用
-- [ ] 理解工具调用原理，实现简单的Function Calling
-- [ ] 两个项目都推送到GitHub，有README说明
+- [x] 能对比不同Embedding模型的优缺点，选择适合的
+- [x] 说出至少3种RAG优化方法，理解原理
+- [x] 会用LangChain核心组件：PromptTemplate, Chain, Retriever
+- [x] 能用LangChain快速搭建一个RAG应用
+- [x] 理解工具调用原理，实现简单的Function Calling
+- [x] 两个项目都推送到GitHub，有README说明
+
+---
+
+## 📝 本周测试题（带答案）
+
+> 点击问题标题展开看答案
+
+---
+
+<details>
+<summary>▶️ 1. RAG检索中，重排序(Rerank)的作用是什么？</summary>
+> A. 加快检索速度  
+> B. 提高检索准确率，把最相关结果排前面  
+> C. 减少存储占用  
+> D. 替换向量Embedding  
+
+**答案：B**  
+解释：第一步多路召回拿到Top20，用更精准但较慢的模型重排序选出Top5，能提升10-15%准确率。
+</details>
+
+---
+
+<details>
+<summary>▶️ 2. LangChain中LCEL是什么？</summary>
+> A. LangChain Expression Language，用`|`串联组件  
+> B. 一种新的编程语言  
+> C. LangChain Extra Library 附加库  
+> D. 大语言模型评估标准  
+
+**答案：A**  
+解释：LCEL是LangChain的表达式语法，让你能用简洁的`prompt | llm | output_parser`方式组装流程。
+</details>
+
+---
+
+<details>
+<summary>▶️ 3. 中文推荐用哪个Embedding模型开源免费效果好？</summary>
+> A. OpenAI text-embedding-3-small  
+> B. BGE-base-zh-v1.5  
+> C. GPT-4o Embedding  
+> D. Word2Vec  
+
+**答案：B**  
+解释：BGE是智源研究院训练的，专门对中文做了优化，开源免费效果比OpenAI原生中文还好。
+</details>
+
+---
+
+<details>
+<summary>▶️ 4. 什么是混合检索？</summary>
+> A. 混合多种不同模型  
+> B. 同时用向量检索（语义）+ BM25关键词检索，融合结果  
+> C. 混合多个索引  
+> D. 同时检索多个文档集合  
+
+**答案：B**  
+解释：纯向量有时候漏了关键词匹配，混合检索能互补，提高准确率，代码增加不多，收益明显。
+</details>
+
+---
+
+<details>
+<summary>▶️ 5. MCP协议解决了什么问题？</summary>
+> A. 让模型运行更快  
+> B. 统一工具调用格式，换模型不用改代码  
+> C. 减少token消耗  
+> D. 提高LLM推理准确率  
+
+**答案：B**  
+解释：之前每个厂商Function Calling格式都不一样，MCP统一标准，一次开发多处运行。
+</details>
+
+---
+
+<details>
+<summary>▶️ 6. 代码题：补全LangChain RAG代码</summary>
+
+```python
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_chroma import Chroma
+from langchain_openai import OpenAIEmbeddings
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+
+# 1. 加载PDF
+loader = ____①__("data/doc.pdf")
+documents = loader.load()
+
+# 2. 分块
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,
+    chunk_overlap=200
+)
+splits = text_splitter.____②____(documents)
+
+# 3. 建立向量库
+vectorstore = Chroma.____③____(
+    documents=splits,
+    embedding=OpenAIEmbeddings()
+)
+retriever = vectorstore.____④____()
+
+# 运行问答
+question = "什么是RAG"
+answer = rag_chain.invoke(question)
+print(answer)
+```
+
+**答案：**
+① `PyPDFLoader`  
+② `split_documents`  
+③ `from_documents`  
+④ `as_retriever`
+
+**完整可运行代码就是教程中给出的，可以直接运行。**
+</details>
 
 ---
 

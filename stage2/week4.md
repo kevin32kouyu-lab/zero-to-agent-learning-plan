@@ -403,6 +403,82 @@ docker-compose ps
 
 ---
 
+## 📝 本周测试题（带答案）
+
+<details>
+<summary>点击展开 ▶️ 1. 低代码开发Agent适合什么场景？</summary>
+
+> A. 高度自定义复杂流程  
+> B. 快速原型验证和产品上线  
+> C. 需要极致性能优化  
+> D. 开源社区贡献  
+
+**答案：B**  
+解释：低代码胜在快，拖拽就能做，适合快速验证想法和上线产品；复杂自定义还是手写代码灵活。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 2. n8n主要用来做什么？</summary>
+
+> A. 训练大模型  
+> B. 可视化工作流自动化，连接多个SaaS  
+> C. 存储向量数据  
+> D. 做Web界面  
+
+**答案：B**  
+解释：n8n是开源工作流自动化工具，擅长连接各种服务做自动化流水线。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 3. Dify和Coze比，主要优势是什么？</summary>
+
+> A. 完全开源，可以私有部署  
+> B. 不能做RAG  
+> C. 免费额度更大  
+> D. 字节官方出品  
+
+**答案：A**  
+解释：Dify开源可私有部署，数据自己掌控，适合企业内部使用；Coze是字节云端SaaS，更适合快速体验。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 4. 大多数需要工具调用的Agent，用什么规划算法？</summary>
+
+> A. CoT  
+> B. ToT  
+> C. ReAct  
+> D. Reflexion  
+
+**答案：C**  
+解释：ReAct = 思考+行动循环，是目前需要工具调用的Agent最主流成熟的方案。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 5. 评估Agent最重要的指标是什么？</summary>
+
+> A. 平均token消耗  
+> B. 任务完成率  
+> C. 运行时间  
+> D. 代码行数  
+
+**答案：B**  
+解释：任务完成率是硬指标，100个任务能成功完成多少个，这是最核心的评估指标。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 6. 对比CoT和ToT，哪个说法正确？</summary>
+
+> A. CoT探索多条路径  
+> B. ToT适合简单问题一步推理  
+> C. CoT是单次调用一步推理，ToT探索多条路径选最优  
+> D. ToT token消耗比CoT少  
+
+**答案：C**  
+解释：CoT就是让LLM一步一步思考，单次调用完成；ToT是构建思维树，探索多个路径选最好的，token消耗更大，但复杂问题准确率更高。
+</details>
+
+---
+
 ## 📚 扩展阅读（选看）
 
 - [Coze官方文档](https://docs.coze.cn/)

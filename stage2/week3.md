@@ -594,6 +594,101 @@ def search_knowledge(query: str) -> str:
 
 ---
 
+## 📝 本周测试题（带答案）
+
+<details>
+<summary>点击展开 ▶️ 1. ReAct范式的核心是什么？</summary>
+
+> A. 只思考不行动  
+> B. 思考 → 行动 → 观察循环  
+> C. 一次生成完整答案  
+> D. 搜索 → 思考 → 输出  
+
+**答案：B**  
+解释：ReAct = Reasoning + Acting，核心就是循环思考-行动-观察，直到任务完成。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 2. Agent为什么需要最大步数限制？</summary>
+
+> A. 加快速度  
+> B. 节省token，防止死循环  
+> C. 减少代码长度  
+> D. 提高准确率  
+
+**答案：B**  
+解释：LLM可能陷入无限循环思考，最大步数防止浪费token和死循环。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 3. LangGraph的三大核心概念是？</summary>
+
+> A. 节点、边、状态  
+> B. 输入、输出、模型  
+> C. Agent、工具、记忆  
+> D. Prompt、LLM、输出  
+
+**答案：A**  
+解释：LangGraph基于图编排，核心就是节点（做什么）、边（怎么走）、状态（数据存在哪）。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 4. 什么是条件边？</summary>
+
+> A. 所有条件都满足才能走  
+> B. 根据上一个节点输出，决定下一步走哪个节点  
+> C. 必须满足条件才能继续  
+> D. 多个条件并行  
+
+**答案：B**  
+解释：ReAct中"需要工具调用去工具节点，不需要就结束"就是条件边的典型应用。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 5. Agent三层记忆中，长期记忆存在哪里？</summary>
+
+> A. LLM上下文窗口  
+> B. 向量数据库  
+> C. 存在硬盘文件不检索  
+> D. LLM权重里  
+
+**答案：B**  
+解释：长期记忆存在向量数据库，用到的时候检索相关内容注入上下文，不占LLM上下文。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 6. RAG + Agent混合架构，RAG封装成什么给Agent用？</summary>
+
+> A. 工具  
+> B.  Prompt  
+> C. 状态  
+> D. 节点  
+
+**答案：A**  
+解释：Agent通过工具调用使用RAG，需要的时候就调用知识库检索，比固定检索更灵活。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 7. 代码题：补全LangGraph条件判断</summary>
+
+```python
+def should_continue(state):
+    last_message = state["messages"][-1]
+    if ____①____:
+        return "continue"
+    else:
+        return "end"
+```
+
+**① 应该填什么？**
+
+**答案：** `last_message.tool_calls`
+
+**解释：** 如果最后一条消息有工具调用，就继续去工具节点执行，否则结束输出答案。
+</details>
+
+---
+
 ## 📚 扩展阅读（选看）
 
 - [ReAct论文原文](https://arxiv.org/abs/2210.03629)

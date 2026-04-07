@@ -230,4 +230,56 @@ graph TD
 
 ---
 
+## 📝 总体测试题（带答案）
+
+<details>
+<summary>点击展开 ▶️ 1. 整个学习计划两个月总学习时长是多少？</summary>
+
+> A. 96小时  
+> B. 192小时  
+> C. 288小时  
+> D. 400小时  
+
+**答案：B**  
+解释：8周 × 6天 × 4小时 = 192小时，循序渐进，符合学习规律。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 2. 写完两个项目，哪个项目用了CrewAI，哪个用了LangGraph？</summary>
+
+> A. 财经助手CrewAI，代码生成助手LangGraph  
+> B. 代码生成助手CrewAI，财经助手LangGraph  
+> C. 都是CrewAI  
+> D. 都是LangGraph  
+
+**答案：A**  
+解释：财经助手是角色分工流水线，CrewAI简单清晰；代码生成需要循环评审，LangGraph更灵活支持条件循环。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 3. STAR法则写简历项目，STAR分别代表什么？</summary>
+
+> A. Start, Time, Action, Result  
+> B. Situation, Task, Action, Result  
+> C. State, Task, Action, Result  
+> D. Situation, Target, Action, Review  
+
+**答案：B**  
+解释：STAR法则 = Situation（背景）→ Task（任务）→ Action（行动）→ Result（结果），简历项目描述黄金法则。
+</details>
+
+<details>
+<summary>点击展开 ▶️ 4. 拿到面试offer最重要的是什么？</summary>
+
+> A. 知道所有知识点  
+> B. 有能拿出手的完整项目，能讲清楚思路  
+> C. 刷完所有面试题就行  
+> D. 学历够高就行  
+
+**答案：B**  
+解释：Agent开发是实践领域，面试官看中你做过什么项目，怎么解决问题，两个完整开源项目比什么都重要。
+</details>
+
+---
+
 完成这一步，**整个两个月从零到Agent开发学习计划就全部完成了！** 🎉
